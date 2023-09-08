@@ -1,0 +1,6 @@
+name: nextjs-app-template
+packagePath: .
+org: grupoplatino
+monoRepo: false
+commitMessageTemplate: 'chore(release): release {{new-version}} 🚀'
+tagTemplate: v{{new-version}}

@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "redhat.vscode-yaml",
+    "formulahendry.auto-close-tag",
+    "formulahendry.auto-rename-tag",
+    "IronGeek.vscode-env",
+    "dbaeumer.vscode-eslint",
+    "PulkitGangwar.nextjs-snippets",
+    "esbenp.prettier-vscode",
+    "burkeholland.simple-react-snippets",
+    "bradlc.vscode-tailwindcss",
+    "bungcip.better-toml",
+    "figma.figma-vscode-extension"
+  ]
+}
