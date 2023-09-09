@@ -1,5 +1,7 @@
-import './globals.css';
 import { Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
+import { twMerge } from 'tailwind-merge';
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -9,9 +11,11 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = cookies().get('NEXT_LOCALE');
+
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang={locale?.value ?? 'es'}>
+      <body className={twMerge('theme-dark', inter.className)}>{children}</body>
     </html>
   );
 }

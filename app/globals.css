@@ -2,21 +2,156 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+@layer components {
+  /* h1{
+      @apply text-7xl text-white
+  } */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  body {
+    @apply bg-skin-main text-skin-primary;
+  }
+
+  .tailwind_1-5_grid {
+    grid-template-columns: 1fr 5fr;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+@layer base {
+  :root {
+    --background-gradient: rgb(14, 2, 12);
+    --color-gradient-1: rgba(14, 2, 12, 1) 40%;
+    --color-gradient-2: rgba(64, 12, 56, 1) 64%;
+    --color-gradient-3: rgba(76, 25, 69, 1) 83%;
+    --color-gradient-4: rgba(129, 45, 117, 1) 100%;
+    --bg-color-body: theme(colors.main-black.main);
+    --bg-color-secondary: theme(colors.secondary-white.100);
+    ----bg-home-cards: theme(colors.main-black.400);
+    --color-text-primary: theme(colors.secondary-white.100);
+    --color-text-muted: theme(colors.main-black.300);
+    --color-text-secondary: theme(colors.main-black.main);
+    /*Main gradient*/
+
+    --main-gradient-1: rgba(0, 0, 0, 1);
+    --main-gradient-2: rgba(0, 0, 0, 0.9);
+    --main-gradient-3: rgba(0, 0, 0, 0.8);
+    --main-gradient-4: rgba(0, 0, 0, 0.7);
+  }
+  .theme-white {
+    --background-gradient: rgb(14, 2, 12);
+    --color-gradient-1: rgba(14, 2, 12, 1) 40%;
+    --color-gradient-2: rgba(64, 12, 56, 1) 64%;
+    --color-gradient-3: rgba(76, 25, 69, 1) 83%;
+    --color-gradient-4: rgba(129, 45, 117, 1) 100%;
+    --bg-color-body: theme(colors.secondary-white.main);
+    --bg-color-secondary: theme(colors.main-black.main);
+    --color-text-primary: theme(colors.main-black.main);
+    --color-text-muted: theme(colors.main-black.950);
+    --color-text-secondary: theme(colors.secondary-white.main);
+
+    /*Main gradient*/
+
+    --main-gradient-1: rgba(255, 255, 255, 1);
+    --main-gradient-2: rgba(255, 255, 255, 0.5);
+    --main-gradient-3: rgba(255, 255, 255, 0.4);
+    --main-gradient-4: rgba(255, 255, 255, 1);
+  }
+
+  .theme-dark {
+    --background-gradient: rgb(14, 2, 12);
+    --color-gradient-1: rgba(14, 2, 12, 1) 40%;
+    --color-gradient-2: rgba(64, 12, 56, 1) 64%;
+    --color-gradient-3: rgba(76, 25, 69, 1) 83%;
+    --color-gradient-4: rgba(129, 45, 117, 1) 100%;
+    --bg-color-body: theme(colors.main-black.main);
+    --bg-color-secondary: theme(colors.secondary-white.100);
+    --color-text-primary: theme(colors.secondary-white.100);
+    --color-text-muted: theme(colors.main-black.300);
+    --color-text-secondary: theme(colors.main-black.main);
+
+    /*Main gradient*/
+
+    --main-gradient-1: rgba(0, 0, 0, 1);
+    --main-gradient-2: rgba(0, 0, 0, 0.9);
+    --main-gradient-3: rgba(0, 0, 0, 0.8);
+    --main-gradient-4: rgba(0, 0, 0, 1);
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-page-bg {
+  background: rgb(0, 0, 0);
+  background-image: linear-gradient(
+      20deg,
+      var(--main-gradient-1) 30%,
+      var(--main-gradient-2) 60%,
+      var(--main-gradient-3) 80%,
+      var(--main-gradient-4) 100%
+    ),
+    url('/chico_estadio.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-position-y: top;
+}
+
+.main-second-section-bg {
+  background: rgb(0, 0, 0);
+  background-image: linear-gradient(
+      20deg,
+      var(--main-gradient-1) 10%,
+      var(--main-gradient-2) 20%,
+      var(--main-gradient-3) 60%,
+      var(--main-gradient-4) 100%
+    ),
+    url('/harry_Styles.jpeg');
+  background-size: cover;
+  background-position-y: center;
+}
+
+.main-payment-methods-section {
+  background: rgb(0, 0, 0);
+  background-image: linear-gradient(
+      20deg,
+      var(--main-gradient-1) 30%,
+      var(--main-gradient-2) 60%,
+      var(--main-gradient-3) 80%,
+      var(--main-gradient-4) 100%
+    ),
+    url('/tote_bags_bad_bunny.jpg');
+  background-size: cover;
+  background-position: center;
+  background-position-y: top;
+}
+
+@media (min-width: 1100px) {
+  .main-page-bg {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 2%, rgba(0, 0, 0, 0) 10%),
+      linear-gradient(90deg, var(--main-gradient-1) 40%, var(--main-gradient-2) 60%, var(--main-gradient-3) 80%, var(--main-gradient-4) 100%),
+      url('/chico_estadio.jpg');
+
+    background-size: cover;
+    background-position: center top;
+  }
+
+  .main-second-section-bg {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 2%, rgba(0, 0, 0, 0) 10%), linear-gradient(-180deg, rgba(0, 0, 0, 1) 2%, rgba(0, 0, 0, 0) 10%),
+      linear-gradient(-90deg, var(--main-gradient-1) 30%, var(--main-gradient-2) 60%, var(--main-gradient-3) 80%, var(--main-gradient-4) 100%),
+      url('/harry_Styles.jpeg');
+    background-size: cover;
+    background-position-y: center;
+  }
+
+  .main-payment-methods-section {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 2%, rgba(0, 0, 0, 0) 10%),
+      linear-gradient(90deg, var(--main-gradient-1) 40%, var(--main-gradient-2) 60%, var(--main-gradient-3) 80%, var(--main-gradient-4) 100%),
+      url('/tote_bags_bad_bunny.jpg');
+
+    background-size: cover;
+    background-position: center top;
+  }
 }
