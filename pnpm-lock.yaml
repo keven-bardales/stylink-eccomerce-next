@@ -67,6 +67,9 @@ devDependencies:
   autoprefixer:
     specifier: 10.4.15
     version: 10.4.15(postcss@8.4.28)
+  cosmiconfig-typescript-loader:
+    specifier: ^5.0.0
+    version: 5.0.0(@types/node@20.5.4)(cosmiconfig@8.3.5)(typescript@5.1.6)
   cross-env:
     specifier: ^7.0.3
     version: 7.0.3
@@ -1484,6 +1487,20 @@ packages:
       '@types/node': 20.4.7
       cosmiconfig: 8.3.5(typescript@5.1.6)
       ts-node: 10.9.1(@types/node@20.5.4)(typescript@5.1.6)
+      typescript: 5.1.6
+    dev: true
+
+  /cosmiconfig-typescript-loader@5.0.0(@types/node@20.5.4)(cosmiconfig@8.3.5)(typescript@5.1.6):
+    resolution: {integrity: sha512-+8cK7jRAReYkMwMiG+bxhcNKiHJDM6bR9FD/nGBXOWdMLuYawjF5cGrtLilJ+LGd3ZjCXnJjR5DkfWPoIVlqJA==}
+    engines: {node: '>=v16'}
+    peerDependencies:
+      '@types/node': '*'
+      cosmiconfig: '>=8.2'
+      typescript: '>=4'
+    dependencies:
+      '@types/node': 20.5.4
+      cosmiconfig: 8.3.5(typescript@5.1.6)
+      jiti: 1.20.0
       typescript: 5.1.6
     dev: true
 
@@ -3113,7 +3130,6 @@ packages:
   /jiti@1.20.0:
     resolution: {integrity: sha512-3TV69ZbrvV6U5DfQimop50jE9Dl6J8O1ja1dvBbMba/sZ3YBEQqJ2VZRoQPVnhlzjNtU1vaXRZVrVjU4qtm8yA==}
     hasBin: true
-    dev: false
 
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
