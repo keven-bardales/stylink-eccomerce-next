@@ -125,15 +125,22 @@ export default async function HomePage() {
             <FadeIn as="h2" className="w-full text-center text-2xl font-bold text-skin-secondary md:text-4xl ">
               Ultimos Productos
             </FadeIn>
-            <FadeInStagger as="ul" className="container mx-auto flex flex-col justify-between gap-x-5 gap-y-5 px-5 lg:flex-row lg:px-24">
-              {productos.slice(0, 3).map((producto, index) => (
-                <FadeInStaggredChildren as="li" key={producto.name + index} className="shadow-2xl lg:w-[30%]">
+            <FadeInStagger
+              as="ul"
+              className="container mx-auto flex w-full flex-col flex-wrap justify-between gap-x-5 gap-y-5 px-5 sm:flex-row lg:gap-y-7 lg:px-24"
+            >
+              {productos.map((producto, index) => (
+                <FadeInStaggredChildren
+                  as="li"
+                  key={`producto ${index}`}
+                  className="flex w-full grow justify-center shadow-2xl sm:w-[40%] sm:max-w-[60%] xl:w-[30%] xl:max-w-none"
+                >
                   <Image
                     width={512}
                     height={512}
-                    className="h-72 w-full rounded-md bg-center object-fill lg:h-96"
-                    src={producto.image}
-                    alt={producto.name}
+                    className="h-auto w-full rounded-md bg-center object-fill sm:h-72 lg:h-96"
+                    src={producto.imagen}
+                    alt={`producto ${index}`}
                   />
                 </FadeInStaggredChildren>
               ))}
@@ -152,7 +159,7 @@ export default async function HomePage() {
                 <FadeInStaggredChildren
                   as="li"
                   key={producto.name + index}
-                  className="relative flex w-full grow items-center justify-center overflow-hidden border border-skin-secondary px-10 py-12 text-center text-skin-secondary"
+                  className="relative flex w-full grow items-center justify-center overflow-hidden rounded-md border border-skin-secondary px-10 py-12 text-center text-skin-secondary"
                 >
                   <div className="absolute left-0 top-0 z-20 mb-5 px-5 py-2 text-skin-secondary">
                     <Quote />

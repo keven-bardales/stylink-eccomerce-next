@@ -1,197 +1,79 @@
-export const categorias = [
-  {
-    name: 'Todos',
-  },
-  {
-    name: 'Camisas',
-    imagePath: '/bellota_hoodle.jpg',
-    active: true,
-  },
-  {
-    name: 'Tote Bags',
-    imagePath: '/christamass_shirt.jpg',
-  },
-  {
-    name: 'Suéteres',
-    imagePath: '/couple_drawing.JPG',
-  },
-  {
-    name: 'Hoodies',
-    imagePath: '/nasa_hoodie.jpeg',
-  },
-  {
-    name: 'Tazas',
-    imagePath: '/taza_stylink.JPG',
-  },
-  {
-    name: 'Polaroid',
-    imagePath: '/thank_you.jpg',
-  },
-];
+// import back_girl_hoodie from '@/public/back_girl_hoodie.jpg';
+// import eladioShirt from '@/public/eladio_shirt.jpg';
+// import harryStylesShirt from '@/public/harry_Styles.jpeg';
+// import loveMoma from '@/public/love_bed_momma.jpg';
+// import love_yourself_back from '@/public/love_yourself_back.jpg';
+// import nasa_hoodie from '@/public/nasa_hoodie.jpeg';
+// import naughty_nice_sweatshirt from '@/public/naughty_nice_sweatshirt.jpg';
+// import porlasBuenasAmistades from '@/public/por_las_buenas_amistades.jpg';
+// import sweatshirt_screenshot from '@/public/sweatshirt_screenshot.jpg';
+// import taza_rolling_stones from '@/public/taza_rolling_stones.jpg';
+// import taza_screenshot from '@/public/taza_screenshot.jpg';
+// import taza_stylink from '@/public/taza_stylink.jpg';
+// import totebagsBadbunny from '@/public/tote_bags_bad_bunny.jpg';
+// import toteBagUnCoco from '@/public/un_coco_tote_bag.jpg';
+// import yep_special_sweatshirt from '@/public/yep_special_sweatshirt.jpg';
 
 export const productos = [
   {
-    name: 'Producto 1',
-    category: 'Camisas',
-    price: 25.99,
-    image: '/bellota_hoodie.jpg',
+    imagen: '/harry_Styles.jpeg',
+    categoriaId: 1,
   },
   {
-    name: 'Producto 2',
-    category: 'Tote Bags',
-    price: 12.49,
-    image: '/christamass_shirt.jpg',
+    imagen: '/eladio_shirt.jpg',
+    categoriaId: 1,
   },
   {
-    name: 'Producto 3',
-    category: 'Suéteres',
-    price: 35.75,
-    image: '/couple_drawing.jpeg',
+    imagen: '/tote_bags_bad_bunny.jpg',
+    categoriaId: 2,
   },
   {
-    name: 'Producto 4',
-    category: 'Hoodies',
-    price: 28.99,
-    image: '/harry_Styles.jpeg',
+    imagen: '/por_las_buenas_amistades.jpg',
+    categoriaId: 2,
   },
   {
-    name: 'Producto 5',
-    category: 'Tazas',
-    price: 8.99,
-    image: '/hs_hoodie.JPG',
+    imagen: '/un_coco_tote_bag.jpg',
+    categoriaId: 2,
   },
   {
-    name: 'Producto 6',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/love_bed_momma.jpg',
-  },
-  {
-    name: 'Producto 7',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/love_yourself_back.jpg',
-  },
-  {
-    name: 'Producto 8',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/nasa_hoodie.jpeg',
-  },
-  {
-    name: 'Producto 9',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/ouch_mi_crozon_totebag.jpeg',
-  },
-  {
-    name: 'Producto 10',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/por_las_buenas_amistades.jpg',
-  },
-  {
-    name: 'Producto 11',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/pulsera_gray.jpg',
-  },
-  {
-    name: 'Producto 12',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/pulseras_colores.jpg',
-  },
-  {
-    name: 'Producto 13',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/pulseras_thank_you.jpg',
-  },
-  {
-    name: 'Producto 14',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/reggalo_platya.jpg',
-  },
-  {
-    name: 'Producto 15',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/santa_gift.jpg',
-  },
-  {
-    name: 'Producto 16',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/self_love_club.jpg',
-  },
-  {
-    name: 'Producto 17',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/thank_you.jpg',
-  },
-  {
-    name: 'Producto 18',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/tote_bags_bad_bunny.jpg',
-  },
-  {
-    name: 'Producto 19',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/taza_rolling_stones.jpg',
-  },
-  {
-    name: 'Producto 20',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/taza_stylink.JPG',
-  },
-  {
-    name: 'Producto 21',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/un_coco_tote_bag.jpg',
-  },
-  {
-    name: 'Producto 22',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/unag_friend.jpg',
-  },
-  {
-    name: 'Producto 23',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/universal_soderman_shirt.jpg',
-  },
-  {
-    name: 'Producto 24',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/walls_louis_tomlinson.jpg',
-  },
-  {
-    name: 'Producto 25',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/ymlqdq_shirt.jpg',
-  },
-  {
-    name: 'Producto 25',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/ymlqdq_shirt.jpg',
-  },
-  {
-    name: 'Producto 25',
-    category: 'Polaroid',
-    price: 50.0,
-    image: '/ymlqdq_shirt.jpg',
+    imagen: '/love_bed_momma.jpg',
+    categoriaId: 1,
   },
 
-  // Puedes continuar agregando más productos aquí...
+  {
+    imagen: '/naughty_nice_sweatshirt.jpg',
+    categoriaId: 3,
+  },
+  {
+    imagen: '/yep_special_sweatshirt.jpg',
+    categoriaId: 3,
+  },
+  {
+    imagen: '/sweatshirt_screenshot.png',
+    categoriaId: 3,
+  },
+  {
+    imagen: '/nasa_hoodie.jpeg',
+    categoriaId: 4,
+  },
+  {
+    imagen: '/love_yourself_back.jpg',
+    categoriaId: 4,
+  },
+  {
+    imagen: '/back_girl_hoodie.jpg',
+    categoriaId: 4,
+  },
+  {
+    imagen: '/taza_rolling_stones.jpg',
+    categoriaId: 5,
+  },
+  {
+    imagen: '/taza_stylink.jpg',
+    categoriaId: 5,
+  },
+  {
+    imagen: '/taza_screenshot.png',
+    categoriaId: 5,
+  },
 ];

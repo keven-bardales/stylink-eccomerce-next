@@ -24,33 +24,31 @@ export default function ContactForm() {
 
   const contactFormSchema = Yup.object().shape({
     name: Yup.string().required('El nombre es requerido'),
-    lastname: Yup.string().required('El apellido es requerido'),
-    email: Yup.string().email('El correo electronico es requerido').required('Ingrese un correo valido'),
+    email: Yup.string().email('Ingrese un correo valido'),
     phoneNumber: Yup.string().phone(['US', 'HN'], 'Ingrese un numero en formato +504-3335-0423').required('El telefono es requerido'),
-    title: Yup.string().required('El titulo es requerido'),
     message: Yup.string().required('El mensaje es requerido'),
   });
 
   const initialFormValues = {
     name: '',
-    lastname: '',
     email: '',
     phoneNumber: '',
     title: '',
     message: '',
+    file: '',
   };
 
-  const handleSubmit = (values: any) => {
-    const data = {
-      ...values,
-      fullName: values.name + ' ' + values.lastname,
-      avaliability: true,
-    };
+  const handleSubmit = (values: typeof initialFormValues) => {
+    const formData = new FormData();
+    formData.append('file', values.file);
+    formData.append('name', values.name);
+    formData.append('email', values.email);
+    formData.append('phoneNumber', values.phoneNumber);
+    formData.append('message', values.message);
 
-    fetch(`${process.env.NEXT_PUBLIC_APP_MAIN_API_URL}/Suggestions/Create`, {
+    fetch(`${process.env.NEXT_PUBLIC_APP_MAIN_API_URL}/api/contact`, {
       method: 'POST',
-      headers: {},
-      body: JSON.stringify(data),
+      body: formData,
     })
       .then((response) => {
         if (!response.ok) {
@@ -68,6 +66,9 @@ export default function ContactForm() {
       })
       .catch((error) => {
         setstate({ ...state, error: error.message });
+        setTimeout(() => {
+          setstate({ ...state, error: '' });
+        }, 3000);
       });
   };
 
@@ -84,7 +85,11 @@ export default function ContactForm() {
       >
         {(formik) => (
           <FadeIn as="div" className="w-full lg:w-1/2">
-            <form onSubmit={formik.handleSubmit} className="flex w-full flex-wrap justify-center gap-y-2 py-5 text-skin-secondary">
+            <form
+              encType="multipart/form-data"
+              onSubmit={formik.handleSubmit}
+              className="flex w-full flex-wrap justify-center gap-y-2 py-5 text-skin-secondary"
+            >
               <h2 className="w-full px-5 text-center text-xl font-bold  leading-8 text-skin-primary lg:text-2xl">
                 Contactanos y pide tu diseño personalizado
               </h2>
@@ -105,25 +110,6 @@ export default function ContactForm() {
                   />
                   <span className={twMerge('invisible w-fit text-red-500', formik.errors.name && formik.touched.name && 'visible')}>
                     {formik.errors.name}
-                  </span>
-                </FormField>
-                <FormField className="flex w-full grow flex-col gap-y-2 sm:w-2/5 lg:w-full 2xl:w-2/5">
-                  <label className="text-sm font-medium text-skin-primary" htmlFor="lastname">
-                    *Apellido
-                  </label>
-                  <input
-                    className="w-full rounded-full border-gray-300 p-2 shadow-sm ring-0 transition duration-200 focus:border-black focus:ring-black sm:text-sm"
-                    type="text"
-                    name="lastname"
-                    placeholder="Ingrese su apellido"
-                    onChange={(e) => {
-                      formik.handleChange(e);
-                    }}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.lastname}
-                  />
-                  <span className={twMerge('invisible w-fit text-red-500', formik.errors.lastname && formik.touched.lastname && 'visible')}>
-                    {formik.errors.lastname ? formik.errors.lastname : 'a'}
                   </span>
                 </FormField>
               </FormGroup>
@@ -171,34 +157,11 @@ export default function ContactForm() {
 
               <FormGroup className="flex basis-full flex-col gap-x-10 gap-y-4 lg:flex-row lg:gap-y-0">
                 <FormField className="flex w-full grow flex-col gap-y-2 lg:w-2/5">
-                  <label className="text-sm font-medium text-skin-primary" htmlFor="title">
-                    *Titulo
-                  </label>
-                  <input
-                    className="w-full rounded-full border-gray-300 p-2 shadow-sm ring-0 transition duration-200 focus:border-black focus:ring-black sm:text-sm"
-                    type="text"
-                    name="title"
-                    placeholder="Ingrese un titulo para su mensaje"
-                    onChange={(e) => {
-                      formik.handleChange(e);
-                    }}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.title}
-                  />
-                  <span className={twMerge('invisible w-fit text-red-500', formik.errors.title && formik.touched.title && 'visible')}>
-                    {formik.errors.title ? formik.errors.title : 'a'}
-                  </span>
-                </FormField>
-              </FormGroup>
-
-              <FormGroup className="flex basis-full flex-col gap-x-10 gap-y-4 lg:flex-row lg:gap-y-0">
-                <FormField className="flex w-full grow flex-col gap-y-2 lg:w-2/5">
                   <label className="text-sm font-medium text-skin-primary" htmlFor="cv">
                     *Mensaje
                   </label>
                   <textarea
                     className="h-32 w-full border-none p-2 shadow-sm outline-none ring-0 transition duration-200 focus:ring-0 sm:text-sm"
-                    id="cv"
                     name="message"
                     placeholder="Agrega una breve descripcion de que te gustaria en tu diseño"
                     onChange={(e) => {
@@ -210,6 +173,52 @@ export default function ContactForm() {
                   <span className={twMerge('invisible w-fit text-red-500', formik.errors.message && formik.touched.message && 'visible')}>
                     {formik.errors.message ? formik.errors.message : 'a'}
                   </span>
+                </FormField>
+              </FormGroup>
+
+              <FormGroup className="flex basis-full flex-col gap-x-10 gap-y-4 lg:flex-row lg:gap-y-0">
+                <FormField className="flex w-full grow flex-col items-center justify-center gap-y-2 bg-white py-5 lg:w-2/5">
+                  <div className="flex w-full justify-center px-5">
+                    <label
+                      className="w-full cursor-pointer bg-black px-3 py-2 text-center text-sm font-bold text-white sm:w-[70%] md:w-[40%] lg:w-[20%]"
+                      htmlFor="foto"
+                    >
+                      Seleccionar Archivooo
+                    </label>
+                    <input
+                      className="hidden w-full border-none p-2 shadow-sm outline-none ring-0 transition-all duration-300 focus:ring-0 sm:text-sm"
+                      id="foto"
+                      type="file"
+                      accept=".doc, .docx, .pdf, .jpg, .jpeg, .png"
+                      name="foto"
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          const file = e.target.files[0];
+                          formik.setFieldValue('file', file);
+                        }
+                      }}
+                      onBlur={formik.handleBlur}
+                    />
+                  </div>
+                  <span className="text-center text-base font-light leading-6 text-gray-400">
+                    Archivos aceptados .doc, .docx, .pdf, .jpg, .jpeg, .png
+                  </span>
+                  {/* <span
+                    className={twMerge(
+                      'hidden text-base font-light leading-6 text-gray-500 opacity-0 transition-all duration-300',
+                      formik.values && 'block opacity-100'
+                    )}
+                  >
+                    {formik.values.cv?.name}
+                  </span> */}
+                  {/* <span
+                    className={twMerge(
+                      'hidden text-red-500 opacity-0 transition-all duration-300',
+                      formik.errors && formik.touched && 'block opacity-100'
+                    )}
+                  >
+                    {formik.errors ? formik.errors : 'a'}
+                  </span> */}
                 </FormField>
               </FormGroup>
               <div className="flex w-full justify-center">
