@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // import back_girl_hoodie from '@/public/back_girl_hoodie.jpg';
 // import eladioShirt from '@/public/eladio_shirt.jpg';
 // import harryStylesShirt from '@/public/harry_Styles.jpeg';

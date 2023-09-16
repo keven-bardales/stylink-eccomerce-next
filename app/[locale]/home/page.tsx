@@ -1,10 +1,15 @@
+/* eslint-disable prettier/prettier */
+'use client';
+
 import ContactForm from '@/components/pages/home/ccontact/contact-form';
 import { FadeIn, FadeInStagger, FadeInStaggredChildren } from '@/components/shared/client/framer/FadeIn';
 import Framer from '@/components/shared/client/framer/framer-motion';
 import PageAnimationWrapper from '@/components/shared/client/framer/page-wrapper';
+import { categorias } from '@/lib/utils/constants/categorias';
 import { productos } from '@/lib/utils/constants/products';
 import { MessageSquare, Pencil, Quote, Truck } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 const beneficios = [
   {
@@ -25,7 +30,10 @@ const beneficios = [
   },
 ];
 
-export default async function HomePage() {
+export default function HomePage() {
+  const [filtroCatId, setFiltroCatId] = useState(0);
+  const [productosFiltrados, setProductosFiltrados] = useState<any[]>([]);
+
   return (
     <PageAnimationWrapper key="home-wrapper" className="theme-dark">
       <section className="animate-fade-in-slow relative flex min-h-screen items-center justify-center bg-black">
@@ -125,29 +133,74 @@ export default async function HomePage() {
             <FadeIn as="h2" className="w-full text-center text-2xl font-bold text-skin-secondary md:text-4xl ">
               Ultimos Productos
             </FadeIn>
-            <FadeInStagger
-              as="ul"
-              className="container mx-auto flex w-full flex-col flex-wrap justify-between gap-x-5 gap-y-5 px-5 sm:flex-row lg:gap-y-7 lg:px-24"
-            >
-              {productos.map((producto, index) => (
-                <FadeInStaggredChildren
-                  as="li"
-                  key={`producto ${index}`}
-                  className="flex w-full grow justify-center shadow-2xl sm:w-[40%] sm:max-w-[60%] xl:w-[30%] xl:max-w-none"
+
+            <div className='flex flex-wrap gap-3'>
+              {categorias.map(cat => (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setFiltroCatId(cat.id);
+                    const prods = productos.filter(prod => prod.categoriaId == cat.id);
+                    if(cat.id !== 0) {
+                      setProductosFiltrados(prods);
+                    }
+                  }}
+                  className={`border border-black rounded-lg  px-5 py-2 hover:text-white hover:bg-black transition-all hover:scale-105 ${filtroCatId == cat.id ? 'text-white bg-black scale-110' : 'text-gray-800'}`}
                 >
-                  <Image
-                    width={512}
-                    height={512}
-                    className="h-auto w-full rounded-md bg-center object-fill sm:h-72 lg:h-96"
-                    src={producto.imagen}
-                    alt={`producto ${index}`}
-                  />
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+
+            {filtroCatId ? (
+              <FadeInStagger
+                as="ul"
+                className="container mx-auto flex w-full flex-col flex-wrap justify-between gap-x-5 gap-y-5 px-5 sm:flex-row lg:gap-y-7 lg:px-24"
+              >
+                {productosFiltrados.map((producto, index) => (
+                  <FadeInStaggredChildren
+                    as="li"
+                    key={`producto ${index}`}
+                    className="flex w-full grow justify-center shadow-2xl sm:w-[40%] sm:max-w-[60%] xl:w-[30%] xl:max-w-none"
+                  >
+                    <Image
+                      width={512}
+                      height={512}
+                      className="h-auto w-full rounded-md bg-center object-fill sm:h-72 lg:h-96"
+                      src={producto.imagen}
+                      alt={`producto ${index}`}
+                    />
                 </FadeInStaggredChildren>
               ))}
             </FadeInStagger>
-            <button className="w-full rounded-full border-2 border-skin-main bg-skin-main p-3 text-xl font-bold text-skin-primary transition duration-300 sm:w-3/4 lg:w-64 lg:p-5">
-              Ver mas
-            </button>
+            ): (
+              <FadeInStagger
+                  as="ul"
+                  className="container mx-auto flex w-full flex-col flex-wrap justify-between gap-x-5 gap-y-5 px-5 sm:flex-row lg:gap-y-7 lg:px-24"
+                >
+                  {productos.map((producto, index) => (
+                    <FadeInStaggredChildren
+                      as="li"
+                      key={`producto ${index}`}
+                      className="flex w-full grow justify-center shadow-2xl sm:w-[40%] sm:max-w-[60%] xl:w-[30%] xl:max-w-none"
+                    >
+                      <Image
+                        width={512}
+                        height={512}
+                        className="h-auto w-full rounded-md bg-cefnter object-fill sm:h-72 lg:h-96"
+                        src={producto.imagen}
+                        alt={`producto ${index}`}
+                      />
+                    </FadeInStaggredChildren>
+                  ))}
+                </FadeInStagger>
+            )}
+
+            {filtroCatId ? (
+              <button onClick={() => setFiltroCatId(0)} className="w-full rounded-full border-2 border-skin-main bg-skin-main p-3 text-xl font-bold text-skin-primary transition duration-300 sm:w-3/4 lg:w-64 lg:p-5">
+                Ver mas
+              </button>
+            ) : null}
           </section>
 
           <section className="flex w-full flex-col items-center gap-y-10">
@@ -158,7 +211,7 @@ export default async function HomePage() {
               {productos.slice(0, 3).map((producto, index) => (
                 <FadeInStaggredChildren
                   as="li"
-                  key={producto.name + index}
+                  key={index}
                   className="relative flex w-full grow items-center justify-center overflow-hidden rounded-md border border-skin-secondary px-10 py-12 text-center text-skin-secondary"
                 >
                   <div className="absolute left-0 top-0 z-20 mb-5 px-5 py-2 text-skin-secondary">
