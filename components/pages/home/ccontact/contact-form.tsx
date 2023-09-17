@@ -59,7 +59,7 @@ export default function ContactForm() {
     formData.append('message', values.message);
 
     try {
-      const response: any = await fetch(`${process.env.NEXT_PUBLIC_APP_MAIN_API_URL}/api/contact`, { method: 'POST', body: formData });
+      const response: any = await fetch(`/api/contact`, { method: 'POST', body: formData });
 
       if (response.ok) {
         setstate({ ...state, isNotificationOpen: true });

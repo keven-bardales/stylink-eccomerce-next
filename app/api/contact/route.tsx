@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { smtpEmail, transporter } from '@/lib/utils/nodemailer-transport/transport';
-import { PageConfig } from 'next';
 import { MailOptions } from 'nodemailer/lib/json-transport';
 
 // import { Email } from "@/components/email";
-
-export const config: PageConfig = {
-  runtime: 'experimental-edge',
-};
 
 interface ExpectedFields {
   name: string;
