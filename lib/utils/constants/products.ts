@@ -20,9 +20,10 @@ export const productos = [
     imagen: '/harry_Styles.jpeg',
     categoriaId: 1,
   },
+
   {
-    imagen: '/eladio_shirt.jpg',
-    categoriaId: 1,
+    imagen: '/nasa_hoodie.jpeg',
+    categoriaId: 4,
   },
   {
     imagen: '/tote_bags_bad_bunny.jpg',
@@ -50,13 +51,14 @@ export const productos = [
     categoriaId: 3,
   },
   {
+    imagen: '/eladio_shirt.jpg',
+    categoriaId: 1,
+  },
+  {
     imagen: '/sweatshirt_screenshot.png',
     categoriaId: 3,
   },
-  {
-    imagen: '/nasa_hoodie.jpeg',
-    categoriaId: 4,
-  },
+
   {
     imagen: '/love_yourself_back.jpg',
     categoriaId: 4,

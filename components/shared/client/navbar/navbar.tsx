@@ -1,37 +1,48 @@
 'use client';
 import { navVariants } from '@/lib/utils/constants/framer/framer-variants';
 import { motion } from 'framer-motion';
-import { ShoppingCart } from 'lucide-react';
+import { Menu, XCircle } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import logo_stylink from 'public/logo_stylink.png';
 import { useEffect, useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 const pagesLinks = [
   {
     name: 'Inicio',
-    path: '/',
+    path: 'home',
   },
   {
-    name: 'Tienda',
-    path: '/shop',
+    name: 'Personalizar',
+    path: 'customize',
   },
   {
-    name: 'Acerca',
-    path: '/about',
+    name: 'Productos',
+    path: 'products',
   },
-  {
-    name: 'Blog',
-    path: '/blog',
-  },
+
   {
     name: 'Contacto',
-    path: '/contact',
+    path: 'contact',
   },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isnavOpen, setisnavOpen] = useState(false);
+
+  const toggleNav = () => {
+    setisnavOpen(!isnavOpen);
+  };
+
+  const handleScroll = (id: string) => {
+    // first prevent the default behavior
+    // get the href and remove everything before the hash (#)
+
+    // get the element by id and use scrollIntoView
+    const elem = document.getElementById(id);
+    elem?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,7 +61,8 @@ const Navbar = () => {
     <header
       className={twMerge(
         'fixed top-0 z-50 w-full border-b border-b-transparent py-4 transition duration-300 ease-linear',
-        scrolled && 'border-b-skin-secondary bg-skin-secondary py-0'
+        scrolled && 'border-b-skin-secondary bg-skin-secondary py-0',
+        isnavOpen && 'bg-skin-secondary lg:bg-transparent'
       )}
     >
       <motion.nav
@@ -58,34 +70,67 @@ const Navbar = () => {
         initial="hidden"
         whileInView={'show'}
         className={twMerge(
-          `container mx-auto flex w-full items-center justify-between gap-x-5 border border-transparent bg-transparent px-7 lg:px-24`,
-          scrolled && 'text-skin-secondary'
+          `container mx-auto flex w-full items-center justify-between gap-x-5 border border-transparent bg-transparent px-7 lg:gap-x-28 lg:px-24`,
+          isnavOpen && 'flex-wrap !text-black lg:px-24'
         )}
       >
-        <figure className="w-20">
-          {scrolled ? (
-            <Image height={512} width={512} src="/logo_stylink.png" className="h-auto w-full rounded-xl" alt="" />
+        <figure
+          onClick={() => {
+            handleScroll('home');
+          }}
+          className="w-20 cursor-pointer"
+        >
+          {scrolled || isnavOpen ? (
+            <Image height={512} width={512} src={logo_stylink} className="h-auto w-full rounded-xl" alt="" />
           ) : (
             <Image height={512} width={512} src="/no_bg_white_letters.png" alt="" />
           )}
         </figure>
-        <div className="hidden grow justify-around lg:flex">
+        <div
+          className={twMerge(
+            'hidden grow flex-col justify-between transition duration-300 sm:flex-row lg:flex',
+            isnavOpen && 'order-last flex w-full gap-y-5 rounded-xl text-black lg:order-none lg:flex'
+          )}
+        >
           {pagesLinks.map((page) => {
             return (
-              <Link
-                key={page.name}
+              <button
+                key={page.path}
                 className={twMerge(
                   'text-xl font-bold text-skin-primary transition duration-300 hover:scale-110 hover:text-skin-primary hover:underline',
-                  scrolled && 'text-skin-secondary hover:text-skin-secondary'
+                  scrolled && 'text-black hover:text-skin-secondary',
+                  isnavOpen && 'text-black hover:text-skin-secondary lg:text-skin-primary lg:hover:text-skin-primary'
                 )}
-                href={page.path}
+                onClick={() => {
+                  handleScroll(page.path);
+                }}
               >
                 {page.name}
-              </Link>
+              </button>
             );
           })}
         </div>
-        <ShoppingCart className="text-skin-main h-8 w-8 cursor-pointer transition duration-300  hover:scale-110 hover:text-skin-primary" />
+        <button
+          className="lg:hidden"
+          onClick={() => {
+            toggleNav();
+          }}
+        >
+          {isnavOpen ? (
+            <XCircle
+              className={twMerge('text-skin-main h-8 w-8 cursor-pointer transition duration-300 lg:hidden', isnavOpen && 'text-skin-secondary')}
+            />
+          ) : (
+            <Menu
+              className={twMerge(
+                'text-skin-main h-8 w-8 cursor-pointer transition duration-300 lg:hidden',
+                scrolled && 'text-skin-secondary',
+
+                isnavOpen && 'text-skin-secondary'
+              )}
+            />
+          )}
+        </button>
       </motion.nav>
     </header>
   );

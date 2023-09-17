@@ -27,6 +27,7 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.11.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "yup": "^1.2.0",

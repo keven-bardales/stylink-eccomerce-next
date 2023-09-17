@@ -15,6 +15,15 @@ interface ContactFormState {
   isNotificationOpen: boolean;
 }
 
+interface ContactFormValues {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  title: string;
+  message: string;
+  file: any;
+}
+
 export default function ContactForm() {
   const [state, setstate] = useState<ContactFormState>({
     error: '',
@@ -24,12 +33,15 @@ export default function ContactForm() {
 
   const contactFormSchema = Yup.object().shape({
     name: Yup.string().required('El nombre es requerido'),
-    email: Yup.string().email('Ingrese un correo valido'),
-    phoneNumber: Yup.string().phone(['US', 'HN'], 'Ingrese un numero en formato +504-3335-0423').required('El telefono es requerido'),
+    email: Yup.string().email('Ingrese un correo valido').required('El correo es requerido'),
+    phoneNumber: Yup.string()
+      .matches(/^(\d{1,4})-(\d{7,11})$/, 'Ingrese el número en el formato [código de país]-[número]')
+      .required('El teléfono es requerido'),
     message: Yup.string().required('El mensaje es requerido'),
+    file: Yup.mixed().required('El archivo es requerido'),
   });
 
-  const initialFormValues = {
+  const initialFormValues: ContactFormValues = {
     name: '',
     email: '',
     phoneNumber: '',
@@ -38,7 +50,7 @@ export default function ContactForm() {
     file: '',
   };
 
-  const handleSubmit = (values: typeof initialFormValues) => {
+  const handleSubmit = async (values: typeof initialFormValues, formikHelpers: any) => {
     const formData = new FormData();
     formData.append('file', values.file);
     formData.append('name', values.name);
@@ -46,30 +58,38 @@ export default function ContactForm() {
     formData.append('phoneNumber', values.phoneNumber);
     formData.append('message', values.message);
 
-    fetch(`${process.env.NEXT_PUBLIC_APP_MAIN_API_URL}/api/contact`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          setstate({ ...state, error: 'Failed to create' });
-          return Promise.reject(new Error('Failed to create'));
-        }
-        return response.json();
-      })
-      .then((data) => {
+    try {
+      const response: any = await fetch(`${process.env.NEXT_PUBLIC_APP_MAIN_API_URL}/api/contact`, { method: 'POST', body: formData });
+
+      if (response.ok) {
         setstate({ ...state, isNotificationOpen: true });
 
         setTimeout(() => {
           setstate({ ...state, isNotificationOpen: false });
         }, 2000);
-      })
-      .catch((error) => {
-        setstate({ ...state, error: error.message });
+        formikHelpers.resetForm();
+      }
+
+      if (!response.ok) {
+        const newResponse = await response.json();
+        setstate({ ...state, error: newResponse.message });
         setTimeout(() => {
           setstate({ ...state, error: '' });
         }, 3000);
-      });
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      setstate({ ...state, error: 'Error al enviar' });
+      setTimeout(() => {
+        setstate({ ...state, error: '' });
+      }, 3000);
+      return false;
+    } finally {
+      formikHelpers.setSubmitting(false);
+    }
   };
 
   return (
@@ -78,8 +98,7 @@ export default function ContactForm() {
       <Formik
         validationSchema={contactFormSchema}
         onSubmit={(values, formikHelpers) => {
-          handleSubmit(values);
-          formikHelpers.resetForm();
+          handleSubmit(values, formikHelpers);
         }}
         initialValues={initialFormValues}
       >
@@ -88,13 +107,13 @@ export default function ContactForm() {
             <form
               encType="multipart/form-data"
               onSubmit={formik.handleSubmit}
-              className="flex w-full flex-wrap justify-center gap-y-2 py-5 text-skin-secondary"
+              className="flex w-full flex-wrap justify-center py-5 text-skin-secondary"
             >
-              <h2 className="w-full px-5 text-center text-xl font-bold  leading-8 text-skin-primary lg:text-2xl">
+              <h2 className="mb-5 w-full px-5 text-center text-xl  font-bold leading-8 text-skin-primary lg:text-2xl">
                 Contactanos y pide tu diseño personalizado
               </h2>
 
-              <FormGroup className="flex basis-full flex-col gap-x-10 gap-y-4 sm:flex-row lg:flex-wrap lg:gap-y-0">
+              <FormGroup className="flex basis-full flex-col gap-x-10 sm:flex-row lg:flex-wrap">
                 <FormField className="flex w-full grow flex-col gap-y-2 sm:w-2/5 lg:w-full 2xl:w-2/5">
                   <label className="text-sm font-medium text-skin-primary" htmlFor="name">
                     *Nombre
@@ -109,12 +128,12 @@ export default function ContactForm() {
                     value={formik.values.name}
                   />
                   <span className={twMerge('invisible w-fit text-red-500', formik.errors.name && formik.touched.name && 'visible')}>
-                    {formik.errors.name}
+                    {formik.errors.name ? formik.errors.name : 'a'}
                   </span>
                 </FormField>
               </FormGroup>
 
-              <FormGroup className="flex basis-full flex-col gap-x-10 gap-y-4 sm:flex-row lg:flex-wrap lg:gap-y-0">
+              <FormGroup className="flex basis-full flex-col gap-x-10 sm:flex-row lg:flex-wrap">
                 <FormField className="flex w-full grow flex-col gap-y-2 sm:w-2/5 lg:w-full 2xl:w-2/5">
                   <label className="text-sm font-medium text-skin-primary" htmlFor="email">
                     *Email
@@ -131,7 +150,7 @@ export default function ContactForm() {
                     value={formik.values.email}
                   />
                   <span className={twMerge('invisible w-fit text-red-500', formik.errors.email && formik.touched.email && 'visible')}>
-                    {formik.errors.email}
+                    {formik.errors.email ? formik.errors.email : 'a'}
                   </span>
                 </FormField>
                 <FormField className="flex w-full grow flex-col gap-y-2 sm:w-2/5 lg:w-full 2xl:w-2/5">
@@ -144,7 +163,22 @@ export default function ContactForm() {
                     name="phoneNumber"
                     placeholder="+504-3332-2530"
                     onChange={(e) => {
-                      formik.handleChange(e);
+                      let value = e.target.value.replace(/[^\d-]/g, ''); // Eliminar todo lo que no sea dígito o guión
+                      const parts = value.split('-');
+
+                      if (parts.length === 1) {
+                        if (parts[0].length > 4) {
+                          parts[0] = parts[0].substring(0, 4); // Limitar el código del país a 4 dígitos
+                        }
+                      } else if (parts.length === 2) {
+                        if (parts[1].length > 11) {
+                          parts[1] = parts[1].substring(0, 11); // Limitar el número de teléfono a 11 dígitos
+                        }
+                      }
+
+                      value = parts.join('-');
+
+                      formik.setFieldValue('phoneNumber', value);
                     }}
                     onBlur={formik.handleBlur}
                     value={formik.values.phoneNumber}
@@ -155,7 +189,7 @@ export default function ContactForm() {
                 </FormField>
               </FormGroup>
 
-              <FormGroup className="flex basis-full flex-col gap-x-10 gap-y-4 lg:flex-row lg:gap-y-0">
+              <FormGroup className="flex basis-full flex-col gap-x-10 lg:flex-row">
                 <FormField className="flex w-full grow flex-col gap-y-2 lg:w-2/5">
                   <label className="text-sm font-medium text-skin-primary" htmlFor="cv">
                     *Mensaje
@@ -180,17 +214,17 @@ export default function ContactForm() {
                 <FormField className="flex w-full grow flex-col items-center justify-center gap-y-2 bg-white py-5 lg:w-2/5">
                   <div className="flex w-full justify-center px-5">
                     <label
-                      className="w-full cursor-pointer bg-black px-3 py-2 text-center text-sm font-bold text-white sm:w-[70%] md:w-[40%] lg:w-[20%]"
-                      htmlFor="foto"
+                      className="w-full cursor-pointer bg-black px-3 py-2 text-center text-sm font-bold text-white sm:w-[70%] md:w-[40%] lg:w-[30%]"
+                      htmlFor="file"
                     >
-                      Seleccionar Archivooo
+                      Seleccionar Archivo
                     </label>
                     <input
                       className="hidden w-full border-none p-2 shadow-sm outline-none ring-0 transition-all duration-300 focus:ring-0 sm:text-sm"
-                      id="foto"
+                      id="file"
                       type="file"
                       accept=".doc, .docx, .pdf, .jpg, .jpeg, .png"
-                      name="foto"
+                      name="file"
                       onChange={(e) => {
                         if (e.target.files) {
                           const file = e.target.files[0];
@@ -200,28 +234,20 @@ export default function ContactForm() {
                       onBlur={formik.handleBlur}
                     />
                   </div>
-                  <span className="text-center text-base font-light leading-6 text-gray-400">
+                  <span className="px-5 text-center text-base font-light leading-6 text-gray-400">
                     Archivos aceptados .doc, .docx, .pdf, .jpg, .jpeg, .png
                   </span>
-                  {/* <span
+                  <span
                     className={twMerge(
                       'hidden text-base font-light leading-6 text-gray-500 opacity-0 transition-all duration-300',
                       formik.values && 'block opacity-100'
                     )}
                   >
-                    {formik.values.cv?.name}
-                  </span> */}
-                  {/* <span
-                    className={twMerge(
-                      'hidden text-red-500 opacity-0 transition-all duration-300',
-                      formik.errors && formik.touched && 'block opacity-100'
-                    )}
-                  >
-                    {formik.errors ? formik.errors : 'a'}
-                  </span> */}
+                    {formik.values.file?.name}
+                  </span>
                 </FormField>
               </FormGroup>
-              <div className="flex w-full justify-center">
+              <div className="mt-5 flex w-full justify-center">
                 <button
                   type="submit"
                   disabled={formik.dirty === false || formik.isValid === false || formik.isSubmitting}

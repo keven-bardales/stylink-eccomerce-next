@@ -32,7 +32,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const message = formdata.get('message');
 
-    const phoneNumber = formdata.get('phoneNumber');
+    let phoneNumber = formdata.get('phoneNumber');
+
+    phoneNumber = phoneNumber.split('-').join('');
 
     const file = formdata.get('file') as unknown as File;
 
@@ -48,7 +50,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const options: MailOptions = {
       from: smtpEmail,
-      to: 'stylinkhn@gmail.com',
+      to: 'keven.bardales@gmail.com',
       subject: `Nuevo pedido de ${name}`,
       html: `<!DOCTYPE html>
       <html>
@@ -56,53 +58,57 @@ export async function POST(req: NextRequest, res: NextResponse) {
         <title>Email Template</title>
       </head>
       <body>
-        <table bgcolor="black" width="100%" cellspacing="0" cellpadding="20">
-          <tr>
-            <td align="center">
-              <table bgcolor="white" width="600" cellspacing="0" cellpadding="15" style="border-radius: 2rem;">
-                <tr>
-                  <td align="center" style="font-size: 1.5rem; font-family: sans-serif; font-weight: 200;">
-                    styl<span style="background: black"><span style="color: white; font-weight: 700;">ink</span><span style="color:white;">.</span></span>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-family: sans-serif;">
-                    <h2>Un nuevo cliente ha pedido un diseño en tu sitio web</h2>
-                    <p>Ponte en contacto con el para completar su pedido.</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center" style="font-weight: 700;">
-                    <h3>Informacion del cliente</h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding: 0 3rem;" align="left">
-                    <h3>Nombre: <span style="font-weight: 200">${name}</span></h3>
-                    <h3>Correo: <a href="mailto:${
-                      email ? email : 'No ha proporcionado un correo'
-                    }?Subject=Aquí%20el%20asunto%20del%20mail" style="font-weight: 200; color: black">${
-                      email ? email : 'No ha proporcionado un correo'
-                    }</a></h3>
-                    <h3>Telefono: <a href="tel:${phoneNumber}" style="font-weight: 200; color:black">${phoneNumber}</a></h3>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="left" style="padding: 0 3rem;">
-                    <p>${message}</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center">
-                    <p>En los archivos adjuntos de este email se encontrara cualquier idea de diseño proporcionada por el cliente</p>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center">
-                   ${whatsappLink}
-                  </td>
-                </tr>
-              </table>
+      <table bgcolor="black" width="100%" cellspacing="0" cellpadding="20">
+      <tr>
+        <td align="center">
+          <table bgcolor="white" width="600" cellspacing="0" cellpadding="10" style="border-radius: 2rem;">
+            <tr>
+              <td align="center" style="font-size: 1.5rem; font-family: sans-serif; font-weight: 200; padding-top: 20px; padding-bottom: 20px;">
+                styl<span style="background: black"><span style="color: white; font-weight: 700;">ink</span><span style="color:white;">.</span></span>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="font-family: sans-serif; padding-top: 10px; padding-bottom: 10px;">
+                <h2>Un nuevo cliente ha pedido un diseño en tu sitio web</h2>
+                <p>Ponte en contacto con él para completar su pedido.</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="font-weight: 700; padding-top: 10px; padding-bottom: 10px;">
+                <h3>Información del cliente</h3>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 0 3rem; padding-top: 10px; padding-bottom: 10px;" align="left">
+                <h3>Nombre: <span style="font-weight: 200">${name}</span></h3>
+                <h3>Correo: <a href="mailto:${
+                  email ? email : 'No ha proporcionado un correo'
+                }?Subject=Aquí%20el%20asunto%20del%20mail" style="font-weight: 200; color: black">${
+                  email ? email : 'No ha proporcionado un correo'
+                }</a></h3>
+                <h3>Teléfono: <a href="tel:${phoneNumber}" style="font-weight: 200; color:black">${phoneNumber}</a></h3>
+              </td>
+            </tr>
+            <tr>
+              <td align="left" style="padding: 0 3rem; padding-top: 10px; padding-bottom: 10px;">
+                <p>${message}</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding-top: 10px; padding-bottom: 10px;">
+                <p>En los archivos adjuntos de este email se encontrará cualquier idea de diseño proporcionada por el cliente</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding-top: 20px; padding-bottom: 40px;">
+             ${whatsappLink}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    
             </td>
           </tr>
         </table>
